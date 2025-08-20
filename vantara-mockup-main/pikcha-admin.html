@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pikcha.ai Admin Dashboard</title>
+    <link rel="stylesheet" href="pikcha-admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Login Page -->
+        <div class="page-content" id="login-page">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="logo">
+                        <i class="fas fa-camera-retro"></i>
+                        <h1>Pikcha.ai</h1>
+                        <p>Admin Dashboard</p>
+                    </div>
+                </div>
+                
+                <div class="login-form">
+                    <div class="oauth-section">
+                        <button class="google-login-btn">
+                            <i class="fab fa-google"></i>
+                            Continue with Google
+                        </button>
+                        
+                        <div class="divider">
+                            <span>OR</span>
+                        </div>
+                    </div>
+                    
+                    <form class="email-login">
+                        <div class="input-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="admin@pikcha.ai" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                        </div>
+                        
+                        <button type="submit" class="login-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div class="page-content" id="dashboard-page" style="display: none;">
+            <!-- Top Navigation -->
+            <nav class="top-nav">
+                <div class="nav-left">
+                    <div class="logo-small">
+                        <i class="fas fa-camera-retro"></i>
+                        <span>Pikcha.ai Admin</span>
+                    </div>
+                </div>
+                
+                <div class="nav-right">
+                    <button class="nav-btn" id="dashboard-btn">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </button>
+                    <button class="nav-btn" id="credits-btn">
+                        <i class="fas fa-coins"></i>
+                        Credits
+                    </button>
+                    <button class="nav-btn" id="templates-btn">
+                        <i class="fas fa-images"></i>
+                        Templates
+                    </button>
+                    <button class="nav-btn" id="settings-btn">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </button>
+                    <button class="nav-btn" id="dark-mode-btn" title="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="nav-btn logout-btn" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Transaction Dashboard -->
+            <div class="dashboard-content" id="transaction-dashboard">
+                <div class="dashboard-header">
+                    <div class="header-content">
+                        <div>
+                            <h2>📊 Transaction Dashboard</h2>
+                            <p>View and manage all AI photo transformations</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="action-btn primary-btn" id="export-transactions-btn">
+                                <i class="fas fa-download"></i>
+                                Export Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Filters -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label>Filter by Date Range:</label>
+                        <input type="date" id="date-from" class="filter-input">
+                        <span>to</span>
+                        <input type="date" id="date-to" class="filter-input">
+                    </div>
+                    
+                    
+                    
+                    
+                    <button class="filter-btn" id="apply-filters">
+                        <i class="fas fa-search"></i>
+                        Apply Date Filter
+                    </button>
+                    
+                    <button class="filter-btn" id="clear-filters" style="background: #95a5a6; margin-left: 10px;">
+                        <i class="fas fa-times"></i>
+                        Clear Filter
+                    </button>
+                </div>
+                
+                <!-- Transactions Table -->
+                <div class="table-container">
+                    <table class="transactions-table" id="data-table">
+                        <thead id="table-header">
+                            <!-- Headers will be populated by JavaScript based on view -->
+                        </thead>
+                        <tbody id="table-tbody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Credits Dashboard -->
+            <div class="dashboard-content" id="credits-dashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>💰 Credits</h2>
+                    <p>Manage your credits and track usage</p>
+                </div>
+
+                <!-- Main Balance Display -->
+                <div class="credit-balance-hero" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 40px; margin: 20px 0; color: white;">
+                    <div class="balance-container" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="balance-main">
+                            <h3 style="margin: 0 0 16px 0; font-size: 18px; opacity: 0.9;">Your Balance</h3>
+                            <div class="balance-display" style="display: flex; align-items: baseline; gap: 8px;">
+                                <span class="balance-number" id="current-balance" style="font-size: 48px; font-weight: 700;">2,450</span>
+                                <span class="balance-label" style="font-size: 20px; opacity: 0.9;">credits</span>
+                            </div>
+                            <button class="btn-buy-credits" onclick="showBuyCredits()" style="margin-top: 20px; background: white; color: #667eea; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                <i class="fas fa-plus"></i> Buy More Credits
+                            </button>
+                        </div>
+                        <div class="balance-stats" style="display: flex; gap: 40px;">
+                            <div class="stat">
+                                <span class="stat-value" style="display: block; font-size: 32px; font-weight: 600;">1,250</span>
+                                <span class="stat-label" style="display: block; font-size: 14px; opacity: 0.9;">Used this month</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" style="display: block; font-size: 32px; font-weight: 600;">95</span>
+                                <span class="stat-label" style="display: block; font-size: 14px; opacity: 0.9;">Used today</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" style="display: block; font-size: 32px; font-weight: 600;">₹125</span>
+                                <span class="stat-label" style="display: block; font-size: 14px; opacity: 0.9;">Per credit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="credit-tabs" style="display: flex; gap: 8px; margin: 20px 0; border-bottom: 2px solid #e1e8ed;">
+                    <button class="tab-btn active" onclick="showCreditTab('usage', this)" style="padding: 12px 20px; background: none; border: none; cursor: pointer; font-weight: 500; border-bottom: 3px solid #667eea;">
+                        <i class="fas fa-history"></i> Usage History
+                    </button>
+                    <button class="tab-btn" onclick="showCreditTab('packages', this)" style="padding: 12px 20px; background: none; border: none; cursor: pointer; font-weight: 500; border-bottom: 3px solid transparent;">
+                        <i class="fas fa-shopping-bag"></i> Buy Credits
+                    </button>
+                    <button class="tab-btn" onclick="showCreditTab('billing', this)" style="padding: 12px 20px; background: none; border: none; cursor: pointer; font-weight: 500; border-bottom: 3px solid transparent;">
+                        <i class="fas fa-receipt"></i> Billing History
+                    </button>
+                </div>
+
+                <!-- Usage History Tab -->
+                <div class="credit-tab-content" id="usage-tab">
+                    <div class="usage-controls" style="display: flex; justify-content: space-between; margin: 20px 0;">
+                        <select id="usage-filter" onchange="filterUsage()" style="padding: 8px 16px; border: 1px solid #ddd; border-radius: 8px;">
+                            <option value="today">Today</option>
+                            <option value="week" selected>Last 7 days</option>
+                            <option value="month">Last 30 days</option>
+                            <option value="all">All time</option>
+                        </select>
+                        <button class="btn-export" onclick="exportUsage()" style="padding: 8px 16px; background: #95a5a6; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+
+                    <div class="usage-timeline">
+                        <!-- Will be populated by JavaScript -->
+                        <div class="usage-day">
+                            <div class="day-header" style="font-weight: 600; margin: 16px 0; color: #2c3e50;">Today</div>
+                            <div class="usage-items">
+                                <div class="usage-item" style="display: flex; justify-content: space-between; padding: 12px; background: #f8f9fa; border-radius: 8px; margin: 8px 0;">
+                                    <div class="usage-time" style="color: #95a5a6;">2:30 PM</div>
+                                    <div class="usage-details" style="flex: 1; margin: 0 16px;">
+                                        <span class="usage-type" style="font-weight: 500;">Face Swap - Celebrity</span> · 
+                                        <span class="usage-style" style="color: #7f8c8d;">Tom Cruise</span>
+                                    </div>
+                                    <div class="usage-cost" style="color: #e74c3c;">-1 credit</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buy Credits Tab -->
+                <div class="credit-tab-content" id="packages-tab" style="display: none;">
+                    <div class="packages-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin: 20px 0;">
+                        <div class="package-card" style="border: 2px solid #e1e8ed; border-radius: 12px; padding: 24px;">
+                            <div class="package-header">
+                                <h4 style="margin: 0 0 8px 0;">Starter</h4>
+                                <div class="package-price" style="font-size: 28px; font-weight: 700; color: #2c3e50;">₹112,500</div>
+                            </div>
+                            <div class="package-credits" style="font-size: 20px; margin: 16px 0; color: #667eea;">750 Credits</div>
+                            <div class="package-rate" style="color: #7f8c8d; margin-bottom: 20px;">₹150 per credit</div>
+                            <button class="package-btn" onclick="purchaseCredits('Starter')" style="width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Buy Now</button>
+                        </div>
+                        
+                        <div class="package-card popular" style="border: 2px solid #667eea; border-radius: 12px; padding: 24px; position: relative;">
+                            <div class="popular-badge" style="position: absolute; top: -12px; right: 20px; background: #667eea; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;">Most Popular</div>
+                            <div class="package-header">
+                                <h4 style="margin: 0 0 8px 0;">Professional</h4>
+                                <div class="package-price" style="font-size: 28px; font-weight: 700; color: #2c3e50;">₹187,500</div>
+                            </div>
+                            <div class="package-credits" style="font-size: 20px; margin: 16px 0; color: #667eea;">1,500 Credits</div>
+                            <div class="package-rate" style="color: #7f8c8d;">₹125 per credit</div>
+                            <div class="package-savings" style="color: #27ae60; margin-bottom: 20px;">Save 17%</div>
+                            <button class="package-btn" onclick="purchaseCredits('Professional')" style="width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Buy Now</button>
+                        </div>
+                        
+                        <div class="package-card" style="border: 2px solid #e1e8ed; border-radius: 12px; padding: 24px;">
+                            <div class="package-header">
+                                <h4 style="margin: 0 0 8px 0;">Enterprise</h4>
+                                <div class="package-price" style="font-size: 28px; font-weight: 700; color: #2c3e50;">₹297,000</div>
+                            </div>
+                            <div class="package-credits" style="font-size: 20px; margin: 16px 0; color: #667eea;">3,000 Credits</div>
+                            <div class="package-rate" style="color: #7f8c8d;">₹99 per credit</div>
+                            <div class="package-savings" style="color: #27ae60; margin-bottom: 20px;">Save 34%</div>
+                            <button class="package-btn" onclick="purchaseCredits('Enterprise')" style="width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Billing History Tab -->
+                <div class="credit-tab-content" id="billing-tab" style="display: none;">
+                    <div class="billing-list">
+                        <div class="billing-item" style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #f8f9fa; border-radius: 8px; margin: 8px 0;">
+                            <div class="billing-date" style="color: #7f8c8d;">Dec 15, 2024</div>
+                            <div class="billing-details" style="flex: 1; margin: 0 20px;">
+                                <span class="billing-desc" style="display: block; font-weight: 500;">Professional Package - 1,500 Credits</span>
+                                <span class="billing-invoice" style="color: #95a5a6; font-size: 14px;">#INV-2024-1215</span>
+                            </div>
+                            <div class="billing-amount" style="font-weight: 600; margin-right: 16px;">₹187,500</div>
+                            <button class="btn-download-invoice" style="padding: 8px 12px; background: #ecf0f1; border: none; border-radius: 6px; cursor: pointer;">
+                                <i class="fas fa-file-pdf"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div class="dashboard-content" id="settings-dashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>⚙️ Settings</h2>
+                    <p>Manage business profile, tax details, and system settings</p>
+                </div>
+
+                <!-- Settings Navigation -->
+                <div class="settings-nav">
+                    <button class="settings-nav-btn active" id="business-profile-nav">
+                        <i class="fas fa-building"></i>
+                        Business Profile
+                    </button>
+                    <button class="settings-nav-btn" id="tax-details-nav">
+                        <i class="fas fa-receipt"></i>
+                        Tax Details
+                    </button>
+                    <button class="settings-nav-btn" id="system-settings-nav">
+                        <i class="fas fa-cogs"></i>
+                        System Settings
+                    </button>
+                </div>
+
+                <!-- Business Profile Section -->
+                <div class="settings-section" id="business-profile-section">
+                    <div class="section-header">
+                        <h3>🏢 Business Profile</h3>
+                        <p>Enter your business information for invoice generation</p>
+                    </div>
+                    
+                    <form class="business-form" id="business-form">
+                        <!-- Company Name -->
+                        <div class="form-section">
+                            <h4>🏢 Company Information</h4>
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="company-name">Company Name *</label>
+                                    <input type="text" id="company-name" name="companyName" required 
+                                           placeholder="ABC Technologies Private Limited">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Details -->
+                        <div class="form-section">
+                            <h4>📍 Business Address</h4>
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="business-address">Address *</label>
+                                    <textarea id="business-address" name="businessAddress" rows="3" required 
+                                              placeholder="Building Name/Number, Street, Area, City"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="state">State *</label>
+                                    <select id="state" name="state" required>
+                                        <option value="">Select State</option>
+                                        <option value="andhra-pradesh">Andhra Pradesh</option>
+                                        <option value="arunachal-pradesh">Arunachal Pradesh</option>
+                                        <option value="assam">Assam</option>
+                                        <option value="bihar">Bihar</option>
+                                        <option value="chhattisgarh">Chhattisgarh</option>
+                                        <option value="goa">Goa</option>
+                                        <option value="gujarat">Gujarat</option>
+                                        <option value="haryana">Haryana</option>
+                                        <option value="himachal-pradesh">Himachal Pradesh</option>
+                                        <option value="jharkhand">Jharkhand</option>
+                                        <option value="karnataka">Karnataka</option>
+                                        <option value="kerala">Kerala</option>
+                                        <option value="madhya-pradesh">Madhya Pradesh</option>
+                                        <option value="maharashtra">Maharashtra</option>
+                                        <option value="manipur">Manipur</option>
+                                        <option value="meghalaya">Meghalaya</option>
+                                        <option value="mizoram">Mizoram</option>
+                                        <option value="nagaland">Nagaland</option>
+                                        <option value="odisha">Odisha</option>
+                                        <option value="punjab">Punjab</option>
+                                        <option value="rajasthan">Rajasthan</option>
+                                        <option value="sikkim">Sikkim</option>
+                                        <option value="tamil-nadu">Tamil Nadu</option>
+                                        <option value="telangana">Telangana</option>
+                                        <option value="tripura">Tripura</option>
+                                        <option value="uttar-pradesh">Uttar Pradesh</option>
+                                        <option value="uttarakhand">Uttarakhand</option>
+                                        <option value="west-bengal">West Bengal</option>
+                                        <option value="delhi">Delhi</option>
+                                        <option value="chandigarh">Chandigarh</option>
+                                        <option value="puducherry">Puducherry</option>
+                                        <option value="jammu-kashmir">Jammu & Kashmir</option>
+                                        <option value="ladakh">Ladakh</option>
+                                        <option value="andaman-nicobar">Andaman & Nicobar Islands</option>
+                                        <option value="dadra-nagar-haveli">Dadra & Nagar Haveli and Daman & Diu</option>
+                                        <option value="lakshadweep">Lakshadweep</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="pincode">PIN Code *</label>
+                                    <input type="text" id="pincode" name="pincode" pattern="[0-9]{6}" required 
+                                           placeholder="400001" maxlength="6">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GST Details -->
+                        <div class="form-section">
+                            <h4>📋 GST Information</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="gst-status">GST Status *</label>
+                                    <select id="gst-status" name="gstStatus" required onchange="toggleGSTFields(this.value)">
+                                        <option value="">Select GST Status</option>
+                                        <option value="registered">GST Registered</option>
+                                        <option value="unregistered">Not GST Registered</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group gst-field" id="gst-number-group" style="display: none;">
+                                    <label for="gst-number">GST Number *</label>
+                                    <input type="text" id="gst-number" name="gstNumber" 
+                                           pattern="[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}" 
+                                           placeholder="22AAAAA0000A1Z5" style="text-transform: uppercase;">
+                                    <span class="help-text">15-character GST number</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Details -->
+                        <div class="form-section">
+                            <h4>📞 Contact Information</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="mobile-number">Mobile Number *</label>
+                                    <input type="tel" id="mobile-number" name="mobileNumber" required 
+                                           placeholder="9876543210" pattern="[0-9]{10}">
+                                    <span class="help-text">10-digit mobile number</span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="whatsapp-number">WhatsApp Number *</label>
+                                    <input type="tel" id="whatsapp-number" name="whatsappNumber" required 
+                                           placeholder="9876543210" pattern="[0-9]{10}">
+                                    <span class="help-text">For order and invoice notifications</span>
+                                </div>
+                                
+                                <div class="form-group full-width">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="same-as-mobile" name="sameAsMobile" onchange="copyMobileToWhatsapp(this.checked)">
+                                        <span class="checkmark"></span>
+                                        WhatsApp number is same as mobile number
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tax Details Section -->
+                <div class="settings-section" id="tax-details-section" style="display: none;">
+                    <div class="section-header">
+                        <h3>🧾 Tax Details</h3>
+                        <p>Configure tax information for invoice compliance</p>
+                    </div>
+                    
+                    <form class="tax-form" id="tax-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="gst-number">GST Number</label>
+                                <input type="text" id="gst-number" name="gstNumber" pattern="[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}" placeholder="22AAAAA0000A1Z5">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pan-number">PAN Number</label>
+                                <input type="text" id="pan-number" name="panNumber" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" placeholder="ABCDE1234F">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tan-number">TAN Number</label>
+                                <input type="text" id="tan-number" name="tanNumber" pattern="[A-Z]{4}[0-9]{5}[A-Z]{1}" placeholder="ABCD12345E">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cin-number">CIN Number</label>
+                                <input type="text" id="cin-number" name="cinNumber" placeholder="U12345AB2020PTC123456">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="msme-number">MSME Registration</label>
+                                <input type="text" id="msme-number" name="msmeNumber" placeholder="UDYAM-XX-00-0000000">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bank-name">Bank Name</label>
+                                <input type="text" id="bank-name" name="bankName">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="account-number">Account Number</label>
+                                <input type="text" id="account-number" name="accountNumber">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="ifsc-code">IFSC Code</label>
+                                <input type="text" id="ifsc-code" name="ifscCode" pattern="[A-Z]{4}0[A-Z0-9]{6}" placeholder="SBIN0000123">
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="tax-exemptions">Tax Exemptions / Special Notes</label>
+                                <textarea id="tax-exemptions" name="taxExemptions" rows="3" placeholder="Any special tax conditions or exemptions..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- System Settings Section -->
+                <div class="settings-section" id="system-settings-section" style="display: none;">
+                    <div class="section-header">
+                        <h3>⚙️ System Settings</h3>
+                        <p>Configure photo retention policy and system behavior</p>
+                    </div>
+                    <div class="setting-item">
+                        <label for="retention-days">Keep photos for:</label>
+                        <div class="setting-control">
+                            <input type="number" id="retention-days" value="30" min="1" max="365">
+                            <span>days</span>
+                        </div>
+                        <p class="setting-description">Photos older than this will be automatically deleted</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="auto-cleanup">Enable auto-cleanup:</label>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="auto-cleanup" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <p class="setting-description">Automatically delete photos based on retention policy</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="session-timeout">Admin session timeout:</label>
+                        <div class="setting-control">
+                            <select id="session-timeout" class="timeout-select">
+                                <option value="15">15 minutes</option>
+                                <option value="30" selected>30 minutes</option>
+                                <option value="60">1 hour</option>
+                                <option value="120">2 hours</option>
+                                <option value="240">4 hours</option>
+                                <option value="0">Never timeout</option>
+                            </select>
+                        </div>
+                        <p class="setting-description">Automatically logout admin users after this period of inactivity</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="booth-timeout">Photo booth session timeout:</label>
+                        <div class="setting-control">
+                            <select id="booth-timeout" class="timeout-select">
+                                <option value="30">30 seconds</option>
+                                <option value="45">45 seconds</option>
+                                <option value="60" selected>60 seconds</option>
+                                <option value="90">90 seconds</option>
+                                <option value="120">2 minutes</option>
+                                <option value="180">3 minutes</option>
+                            </select>
+                        </div>
+                        <p class="setting-description">Reset photo booth to idle screen after this period of inactivity</p>
+                    </div>
+                    
+                    <div class="setting-item danger-zone">
+                        <label>Danger Zone:</label>
+                        <div class="setting-control">
+                            <button class="danger-btn" id="delete-all-btn">
+                                <i class="fas fa-trash-alt"></i>
+                                Delete All Photos Now
+                            </button>
+                        </div>
+                        <p class="setting-description">⚠️ This action cannot be undone. All photos will be permanently deleted.</p>
+                    </div>
+                </div>
+                
+                </div>
+                
+                <!-- Save Buttons for each section -->
+                <div class="settings-actions">
+                    <button class="save-btn" id="save-business-profile" style="display: block;">
+                        <i class="fas fa-save"></i>
+                        Save Business Profile
+                    </button>
+                    <button class="save-btn" id="save-tax-details" style="display: none;">
+                        <i class="fas fa-save"></i>
+                        Save Tax Details
+                    </button>
+                    <button class="save-btn" id="save-system-settings" style="display: none;">
+                        <i class="fas fa-save"></i>
+                        Save System Settings
+                    </button>
+                </div>
+            </div>
+
+            <!-- Templates Dashboard -->
+            <div class="dashboard-content" id="templates-dashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>🖼️ Template Management</h2>
+                    <p>Manage face swap and AI effect templates</p>
+                </div>
+                
+                <!-- Template Navigation -->
+                <div class="template-nav">
+                    <button class="template-nav-btn active" id="faceswap-nav">
+                        <i class="fas fa-face-grin-beam"></i>
+                        Face Swap Templates
+                    </button>
+                    <button class="template-nav-btn" id="aieffects-nav">
+                        <i class="fas fa-magic"></i>
+                        AI Effects Templates
+                    </button>
+                    <button class="template-nav-btn" id="frames-nav">
+                        <i class="fas fa-border-all"></i>
+                        Portrait Frames
+                    </button>
+                </div>
+
+                <!-- Face Swap Templates Section -->
+                <div class="template-section" id="faceswap-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <h3>Face Swap Templates</h3>
+                            <p>Browse and select templates, then arrange them in your preferred order</p>
+                        </div>
+                        <div class="selected-count">
+                            <span id="faceswap-count">0</span> templates selected
+                        </div>
+                    </div>
+
+                    <!-- Quality Settings -->
+                    <div class="quality-settings-card">
+                        <div class="card-header">
+                            <h4><i class="fas fa-sliders-h"></i> Quality Settings</h4>
+                            <p>Choose default quality for face swap operations</p>
+                        </div>
+                        <div class="quality-options">
+                            <label class="quality-option">
+                                <input type="radio" name="face-swap-quality" value="fast" checked>
+                                <div class="quality-card">
+                                    <div class="quality-icon">🚀</div>
+                                    <div class="quality-info">
+                                        <strong>Fast & Normal Quality</strong>
+                                        <span>~5-10 seconds processing</span>
+                                        <span>Good for quick previews</span>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="quality-option">
+                                <input type="radio" name="face-swap-quality" value="high">
+                                <div class="quality-card">
+                                    <div class="quality-icon">🎯</div>
+                                    <div class="quality-info">
+                                        <strong>Slow & Higher Quality</strong>
+                                        <span>~30-60 seconds processing</span>
+                                        <span>Best results and detail</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- View Toggle Tabs -->
+                    <div class="view-tabs">
+                        <button class="tab-btn active" id="faceswap-gallery-tab" data-view="gallery">
+                            <i class="fas fa-th-large"></i>
+                            Browse Templates
+                        </button>
+                        <button class="tab-btn" id="faceswap-selected-tab" data-view="selected">
+                            <i class="fas fa-list"></i>
+                            Selected Templates (<span id="faceswap-selected-count">0</span>)
+                        </button>
+                        <button class="tab-btn" id="faceswap-frames-tab" data-view="frames">
+                            <i class="fas fa-border-all"></i>
+                            Frame Assignments
+                        </button>
+                    </div>
+                    
+                    <!-- Bulk Frame Assignment Tools -->
+                    <div class="bulk-frame-tools" id="faceswap-bulk-tools" style="display: none;">
+                        <div class="bulk-select-all">
+                            <input type="checkbox" id="faceswap-select-all">
+                            <label for="faceswap-select-all">Select All Templates</label>
+                        </div>
+                        <div class="bulk-actions">
+                            <select id="faceswap-frame-selector" class="frame-selector">
+                                <option value="">Choose Frame...</option>
+                                <!-- Frames will be populated by JS -->
+                            </select>
+                            <button class="bulk-assign-btn" id="faceswap-bulk-assign" disabled>
+                                <i class="fas fa-link"></i>
+                                Assign to Selected
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Gallery View -->
+                    <div class="template-view" id="faceswap-gallery-view">
+                        <!-- Search Bar -->
+                        <div class="template-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="faceswap-search" placeholder="Search face swap templates...">
+                        </div>
+
+                        <!-- Category Filters -->
+                        <div class="category-filters">
+                            <button class="category-btn active" data-category="all" data-section="faceswap">All Categories</button>
+                            <button class="category-btn" data-category="celebrity" data-section="faceswap">⭐ Celebrity</button>
+                            <button class="category-btn" data-category="historical" data-section="faceswap">🏛️ Historical</button>
+                            <button class="category-btn" data-category="character" data-section="faceswap">🎭 Character</button>
+                            <button class="category-btn" data-category="fantasy" data-section="faceswap">🦄 Fantasy</button>
+                        </div>
+
+                        <!-- Templates Grid -->
+                        <div class="templates-grid" id="faceswap-gallery-grid">
+                            <!-- Face swap templates will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Selected Templates View -->
+                    <div class="template-view" id="faceswap-selected-view" style="display: none;">
+                        <div class="selected-templates-header">
+                            <h4>Selected Face Swap Templates</h4>
+                            <p>Drag templates to reorder them. This is the order users will see in the app.</p>
+                            <div class="sorting-controls">
+                                <div class="sort-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="faceswap-auto-sort">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>Auto-sort by popularity</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="templates-grid sortable" id="faceswap-selected-grid">
+                            <!-- Selected face swap templates will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Effects Templates Section -->
+                <div class="template-section" id="aieffects-section" style="display: none;">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <h3>AI Effects Templates</h3>
+                            <p>Browse and select templates, then arrange them in your preferred order</p>
+                        </div>
+                        <div class="selected-count">
+                            <span id="aieffects-count">0</span> templates selected
+                        </div>
+                    </div>
+
+                    <!-- View Toggle Tabs -->
+                    <div class="view-tabs">
+                        <button class="tab-btn active" id="aieffects-gallery-tab" data-view="gallery">
+                            <i class="fas fa-th-large"></i>
+                            Browse Templates
+                        </button>
+                        <button class="tab-btn" id="aieffects-selected-tab" data-view="selected">
+                            <i class="fas fa-list"></i>
+                            Selected Templates (<span id="aieffects-selected-count">0</span>)
+                        </button>
+                        <button class="tab-btn" id="aieffects-frames-tab" data-view="frames">
+                            <i class="fas fa-border-all"></i>
+                            Frame Assignments
+                        </button>
+                    </div>
+                    
+                    <!-- Bulk Frame Assignment Tools -->
+                    <div class="bulk-frame-tools" id="aieffects-bulk-tools" style="display: none;">
+                        <div class="bulk-select-all">
+                            <input type="checkbox" id="aieffects-select-all">
+                            <label for="aieffects-select-all">Select All Templates</label>
+                        </div>
+                        <div class="bulk-actions">
+                            <select id="aieffects-frame-selector" class="frame-selector">
+                                <option value="">Choose Frame...</option>
+                                <!-- Frames will be populated by JS -->
+                            </select>
+                            <button class="bulk-assign-btn" id="aieffects-bulk-assign" disabled>
+                                <i class="fas fa-link"></i>
+                                Assign to Selected
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Gallery View -->
+                    <div class="template-view" id="aieffects-gallery-view">
+                        <!-- Search Bar -->
+                        <div class="template-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="aieffects-search" placeholder="Search AI effects templates...">
+                        </div>
+
+                        <!-- Category Filters -->
+                        <div class="category-filters">
+                            <button class="category-btn active" data-category="all" data-section="aieffects">All Categories</button>
+                            <button class="category-btn" data-category="underwater" data-section="aieffects">🌊 Underwater</button>
+                            <button class="category-btn" data-category="fantasy" data-section="aieffects">✨ Fantasy</button>
+                            <button class="category-btn" data-category="vintage" data-section="aieffects">📸 Vintage</button>
+                            <button class="category-btn" data-category="artistic" data-section="aieffects">🎨 Artistic</button>
+                        </div>
+
+                        <!-- Templates Grid -->
+                        <div class="templates-grid" id="aieffects-gallery-grid">
+                            <!-- AI effects templates will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Selected Templates View -->
+                    <div class="template-view" id="aieffects-selected-view" style="display: none;">
+                        <div class="selected-templates-header">
+                            <h4>Selected AI Effects Templates</h4>
+                            <p>Drag templates to reorder them. This is the order users will see in the app.</p>
+                            <div class="sorting-controls">
+                                <div class="sort-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="aieffects-auto-sort">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>Auto-sort by popularity</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="templates-grid sortable" id="aieffects-selected-grid">
+                            <!-- Selected AI effects templates will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portrait Frames Section -->
+                <div class="template-section" id="frames-section" style="display: none;">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <h3>Portrait Frames</h3>
+                            <p>Manage portrait frames that can be applied to templates</p>
+                        </div>
+                        <div class="selected-count">
+                            <span id="frames-count">0</span> frames available
+                        </div>
+                    </div>
+
+                    <!-- Frame Upload -->
+                    <div class="frame-upload-section">
+                        <div class="upload-area" id="frame-upload-area">
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h4>Upload Portrait Frames</h4>
+                                <p>Drag & drop frame images or click to browse</p>
+                                <p class="upload-note">Supported: PNG with transparency (portrait orientation)</p>
+                                <input type="file" id="frame-file-input" accept="image/png" multiple style="display: none;">
+                                <button class="upload-btn" onclick="document.getElementById('frame-file-input').click()">
+                                    <i class="fas fa-plus"></i>
+                                    Choose Files
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Frame Management Tools -->
+                    <div class="frame-tools">
+                        <div class="frame-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="frame-search" placeholder="Search frames...">
+                        </div>
+                        <div class="frame-actions">
+                            <button class="action-btn secondary-btn" id="bulk-assign-frames">
+                                <i class="fas fa-link"></i>
+                                Bulk Assign to Templates
+                            </button>
+                            <button class="action-btn danger-btn" id="delete-selected-frames">
+                                <i class="fas fa-trash"></i>
+                                Delete Selected
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Frames Grid -->
+                    <div class="frames-grid" id="frames-grid">
+                        <!-- Frames will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Viewer Modal -->
+    <div class="modal" id="image-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Photo Details</h3>
+                <button class="close-btn" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="image-comparison">
+                    <div class="image-panel">
+                        <h4>Source Image</h4>
+                        <img id="source-image" src="" alt="Source">
+                    </div>
+                    <div class="image-panel">
+                        <h4>Style Applied</h4>
+                        <img id="style-image" src="" alt="Style">
+                    </div>
+                    <div class="image-panel">
+                        <h4>Final Result</h4>
+                        <img id="final-image" src="" alt="Final">
+                    </div>
+                </div>
+                
+                <div class="photo-metadata">
+                    <div class="metadata-item">
+                        <strong>Date-Time:</strong> <span id="photo-datetime"></span>
+                    </div>
+                    <div class="metadata-item">
+                        <strong>Frame:</strong> <span id="photo-frame"></span>
+                    </div>
+                    <div class="metadata-item">
+                        <strong>Style:</strong> <span id="photo-style"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="action-btn download-btn" id="download-all">
+                    <i class="fas fa-download"></i>
+                    Download All
+                </button>
+                <button class="action-btn print-btn" id="print-photo">
+                    <i class="fas fa-print"></i>
+                    Print
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3>Confirm Action</h3>
+                <button class="close-btn" id="close-confirm">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message"></p>
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn cancel-btn" id="cancel-action">Cancel</button>
+                <button class="action-btn danger-btn" id="confirm-action">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Preview Modal -->
+    <div class="modal" id="template-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="template-modal-title">Template Preview</h3>
+                <button class="close-btn" id="close-template-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="template-preview">
+                    <div class="preview-image-container">
+                        <img id="template-preview-image" src="" alt="Template Preview">
+                        <div class="frame-overlay" id="frame-overlay" style="display: none;">
+                            <img id="frame-preview-image" src="" alt="Frame Preview">
+                        </div>
+                    </div>
+                    <div class="template-details">
+                        <div class="template-info">
+                            <h4 id="template-name">Template Name</h4>
+                            <span class="template-category" id="template-category">Category</span>
+                        </div>
+                        <div class="template-controls">
+                            <div class="status-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="template-active-toggle">
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="status-label">Active</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Frame Assignment Section -->
+                        <div class="frame-assignment-section">
+                            <h4><i class="fas fa-border-all"></i> Frame Assignment</h4>
+                            <p>Choose frames that can be applied to this template</p>
+                            
+                            <div class="frame-search-mini">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="template-frame-search" placeholder="Search frames...">
+                            </div>
+                            
+                            <div class="assigned-frames" id="assigned-frames">
+                                <div class="no-frames-message">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>No frames assigned to this template</span>
+                                </div>
+                            </div>
+                            
+                            <div class="available-frames-grid" id="available-frames-grid">
+                                <!-- Available frames will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn secondary-btn" id="preview-with-frame">
+                    <i class="fas fa-eye"></i>
+                    Preview with Frame
+                </button>
+                <button class="action-btn save-btn" id="template-save">
+                    <i class="fas fa-save"></i>
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="pikcha-admin-script.js"></script>
+</body>
+</html>

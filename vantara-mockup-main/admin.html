@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantara Photo Booth Admin - Backend</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Login Page -->
+        <div class="page-content" id="login-page" style="display: none;">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="logo">
+                        <i class="fas fa-fish"></i>
+                        <h1>Vantara Photo Booth</h1>
+                        <p>Admin Dashboard</p>
+                    </div>
+                </div>
+                
+                <div class="login-form">
+                    <div class="oauth-section">
+                        <button class="google-login-btn">
+                            <i class="fab fa-google"></i>
+                            Continue with Google
+                        </button>
+                        
+                        <div class="divider">
+                            <span>OR</span>
+                        </div>
+                    </div>
+                    
+                    <form class="email-login">
+                        <div class="input-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="admin@vantara.com" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                        </div>
+                        
+                        <button type="submit" class="login-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div class="page-content" id="dashboard-page">
+            <!-- Top Navigation -->
+            <nav class="top-nav">
+                <div class="nav-left">
+                    <div class="logo-small">
+                        <i class="fas fa-fish"></i>
+                        <span>Vantara Admin</span>
+                    </div>
+                </div>
+                
+                <div class="nav-right">
+                    <button class="nav-btn" id="dashboard-btn">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </button>
+                    <button class="nav-btn" id="templates-btn">
+                        <i class="fas fa-images"></i>
+                        Templates
+                    </button>
+                    <button class="nav-btn" id="settings-btn">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </button>
+                    <button class="nav-btn logout-btn" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Transaction Dashboard -->
+            <div class="dashboard-content" id="transaction-dashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>📊 Transaction Dashboard</h2>
+                    <p>View and manage all AI photo transformations</p>
+                </div>
+                
+                <!-- Filters -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label>Filter by Date Range:</label>
+                        <input type="date" id="date-from" class="filter-input">
+                        <span>to</span>
+                        <input type="date" id="date-to" class="filter-input">
+                    </div>
+                    
+                    
+                    
+                    
+                    <button class="filter-btn" id="apply-filters">
+                        <i class="fas fa-search"></i>
+                        Apply Date Filter
+                    </button>
+                    
+                    <button class="filter-btn" id="clear-filters" style="background: #95a5a6; margin-left: 10px;">
+                        <i class="fas fa-times"></i>
+                        Clear Filter
+                    </button>
+                </div>
+                
+                <!-- Transactions Table -->
+                <div class="table-container">
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Date-Time</th>
+                                <th>Source Image</th>
+                                <th>Style Applied</th>
+                                <th>Frame Used</th>
+                                <th>Final Image</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-tbody">
+                            <!-- Sample data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div class="dashboard-content" id="settings-dashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>⚙️ Settings</h2>
+                    <p>Manage photo retention policy and bulk deletion</p>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="setting-item">
+                        <label for="retention-days">Keep photos for:</label>
+                        <div class="setting-control">
+                            <input type="number" id="retention-days" value="30" min="1" max="365">
+                            <span>days</span>
+                        </div>
+                        <p class="setting-description">Photos older than this will be automatically deleted</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="auto-cleanup">Enable auto-cleanup:</label>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="auto-cleanup" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <p class="setting-description">Automatically delete photos based on retention policy</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="session-timeout">Admin session timeout:</label>
+                        <div class="setting-control">
+                            <select id="session-timeout" class="timeout-select">
+                                <option value="15">15 minutes</option>
+                                <option value="30" selected>30 minutes</option>
+                                <option value="60">1 hour</option>
+                                <option value="120">2 hours</option>
+                                <option value="240">4 hours</option>
+                                <option value="0">Never timeout</option>
+                            </select>
+                        </div>
+                        <p class="setting-description">Automatically logout admin users after this period of inactivity</p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="booth-timeout">Photo booth session timeout:</label>
+                        <div class="setting-control">
+                            <select id="booth-timeout" class="timeout-select">
+                                <option value="30">30 seconds</option>
+                                <option value="45">45 seconds</option>
+                                <option value="60" selected>60 seconds</option>
+                                <option value="90">90 seconds</option>
+                                <option value="120">2 minutes</option>
+                                <option value="180">3 minutes</option>
+                            </select>
+                        </div>
+                        <p class="setting-description">Reset photo booth to idle screen after this period of inactivity</p>
+                    </div>
+                    
+                    <div class="setting-item danger-zone">
+                        <label>Danger Zone:</label>
+                        <div class="setting-control">
+                            <button class="danger-btn" id="delete-all-btn">
+                                <i class="fas fa-trash-alt"></i>
+                                Delete All Photos Now
+                            </button>
+                        </div>
+                        <p class="setting-description">⚠️ This action cannot be undone. All photos will be permanently deleted.</p>
+                    </div>
+                </div>
+                
+                <div class="settings-actions">
+                    <button class="save-btn" id="save-settings">
+                        <i class="fas fa-save"></i>
+                        Save Settings
+                    </button>
+                </div>
+            </div>
+
+            <!-- Templates Dashboard -->
+            <div class="dashboard-content" id="templates-dashboard">
+                <div class="dashboard-header">
+                    <h2>🖼️ Template Management</h2>
+                    <p>Manage face swap and AI effect templates</p>
+                </div>
+                
+                <!-- Template Navigation -->
+                <div class="template-nav">
+                    <button class="template-nav-btn active" id="faceswap-nav">
+                        <i class="fas fa-face-grin-beam"></i>
+                        Face Swap Templates
+                    </button>
+                    <button class="template-nav-btn" id="aieffects-nav">
+                        <i class="fas fa-magic"></i>
+                        AI Effects Templates
+                    </button>
+                    <button class="template-nav-btn" id="frames-nav">
+                        <i class="fas fa-border-all"></i>
+                        Photo Frames
+                    </button>
+                </div>
+
+                <!-- Face Swap Templates Section -->
+                <div class="template-section" id="faceswap-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <h3>Face Swap Templates</h3>
+                            <p>Browse and select templates, then arrange them in your preferred order</p>
+                        </div>
+                        <div class="selected-count">
+                            <span id="faceswap-count">0</span> templates selected
+                        </div>
+                    </div>
+
+                    <!-- Quality Settings -->
+                    <div class="quality-settings-card">
+                        <div class="card-header">
+                            <h4><i class="fas fa-sliders-h"></i> Quality Settings</h4>
+                            <p>Choose default quality for face swap operations</p>
+                        </div>
+                        <div class="quality-options">
+                            <label class="quality-option">
+                                <input type="radio" name="face-swap-quality" value="fast" checked>
+                                <div class="quality-card">
+                                    <div class="quality-icon">🚀</div>
+                                    <div class="quality-info">
+                                        <strong>Fast & Normal Quality</strong>
+                                        <span>~5-10 seconds processing</span>
+                                        <span>Good for quick previews</span>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="quality-option">
+                                <input type="radio" name="face-swap-quality" value="high">
+                                <div class="quality-card">
+                                    <div class="quality-icon">🎯</div>
+                                    <div class="quality-info">
+                                        <strong>Slow & Higher Quality</strong>
+                                        <span>~30-60 seconds processing</span>
+                                        <span>Best results and detail</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- View Toggle Tabs -->
+                    <div class="view-tabs">
+                        <button class="tab-btn active" id="faceswap-gallery-tab" data-view="gallery">
+                            <i class="fas fa-th-large"></i>
+                            Browse Templates
+                        </button>
+                        <button class="tab-btn" id="faceswap-selected-tab" data-view="selected">
+                            <i class="fas fa-list"></i>
+                            Selected Templates (<span id="faceswap-selected-count">0</span>)
+                        </button>
+                    </div>
+
+                    <!-- Gallery View -->
+                    <div class="template-view" id="faceswap-gallery-view">
+                        <!-- Search Bar -->
+                        <div class="template-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="faceswap-search" placeholder="Search face swap templates...">
+                        </div>
+
+                        <!-- Category Filters -->
+                        <div class="category-filters">
+                            <button class="category-btn active" data-category="all" data-section="faceswap">All Categories</button>
+                            <button class="category-btn" data-category="celebrity" data-section="faceswap">⭐ Celebrity</button>
+                            <button class="category-btn" data-category="historical" data-section="faceswap">🏛️ Historical</button>
+                            <button class="category-btn" data-category="character" data-section="faceswap">🎭 Character</button>
+                            <button class="category-btn" data-category="fantasy" data-section="faceswap">🦄 Fantasy</button>
+                        </div>
+
+                        <!-- Templates Grid -->
+                        <div class="templates-grid" id="faceswap-gallery-grid">
+                            <!-- Face swap templates will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Selected Templates View -->
+                    <div class="template-view" id="faceswap-selected-view" style="display: none;">
+                        <div class="selected-templates-header">
+                            <h4>Selected Face Swap Templates</h4>
+                            <p>Drag templates to reorder them. This is the order users will see in the app.</p>
+                            <div class="sorting-controls">
+                                <div class="sort-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="faceswap-auto-sort">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>Auto-sort by popularity</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="templates-grid sortable" id="faceswap-selected-grid">
+                            <!-- Selected face swap templates will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Effects Templates Section -->
+                <div class="template-section" id="aieffects-section" style="display: none;">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <h3>AI Effects Templates</h3>
+                            <p>Browse and select templates, then arrange them in your preferred order</p>
+                        </div>
+                        <div class="selected-count">
+                            <span id="aieffects-count">0</span> templates selected
+                        </div>
+                    </div>
+
+                    <!-- View Toggle Tabs -->
+                    <div class="view-tabs">
+                        <button class="tab-btn active" id="aieffects-gallery-tab" data-view="gallery">
+                            <i class="fas fa-th-large"></i>
+                            Browse Templates
+                        </button>
+                        <button class="tab-btn" id="aieffects-selected-tab" data-view="selected">
+                            <i class="fas fa-list"></i>
+                            Selected Templates (<span id="aieffects-selected-count">0</span>)
+                        </button>
+                    </div>
+
+                    <!-- Gallery View -->
+                    <div class="template-view" id="aieffects-gallery-view">
+                        <!-- Search Bar -->
+                        <div class="template-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="aieffects-search" placeholder="Search AI effects templates...">
+                        </div>
+
+                        <!-- Category Filters -->
+                        <div class="category-filters">
+                            <button class="category-btn active" data-category="all" data-section="aieffects">All Categories</button>
+                            <button class="category-btn" data-category="underwater" data-section="aieffects">🌊 Underwater</button>
+                            <button class="category-btn" data-category="fantasy" data-section="aieffects">✨ Fantasy</button>
+                            <button class="category-btn" data-category="vintage" data-section="aieffects">📸 Vintage</button>
+                            <button class="category-btn" data-category="artistic" data-section="aieffects">🎨 Artistic</button>
+                        </div>
+
+                        <!-- Templates Grid -->
+                        <div class="templates-grid" id="aieffects-gallery-grid">
+                            <!-- AI effects templates will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Selected Templates View -->
+                    <div class="template-view" id="aieffects-selected-view" style="display: none;">
+                        <div class="selected-templates-header">
+                            <h4>Selected AI Effects Templates</h4>
+                            <p>Drag templates to reorder them. This is the order users will see in the app.</p>
+                            <div class="sorting-controls">
+                                <div class="sort-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="aieffects-auto-sort">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>Auto-sort by popularity</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="templates-grid sortable" id="aieffects-selected-grid">
+                            <!-- Selected AI effects templates will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo Frames Section -->
+                <div class="template-section" id="frames-section" style="display: none;">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <h3>Photo Frames</h3>
+                            <p>Browse frame genres, select frames, and arrange them in your preferred order</p>
+                        </div>
+                        <div class="selected-count">
+                            <span id="frames-count">0</span> frames selected
+                        </div>
+                    </div>
+
+                    <!-- View Toggle Tabs -->
+                    <div class="view-tabs">
+                        <button class="tab-btn active" id="frames-gallery-tab" data-view="gallery">
+                            <i class="fas fa-th-large"></i>
+                            Browse Frames
+                        </button>
+                        <button class="tab-btn" id="frames-selected-tab" data-view="selected">
+                            <i class="fas fa-list"></i>
+                            Selected Frames (<span id="frames-selected-count">0</span>)
+                        </button>
+                    </div>
+
+                    <!-- Gallery View -->
+                    <div class="template-view" id="frames-gallery-view">
+                        <!-- Search Bar -->
+                        <div class="template-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="frames-search" placeholder="Search frames...">
+                        </div>
+
+                        <!-- Genre Filters -->
+                        <div class="category-filters">
+                            <button class="category-btn active" data-category="all" data-section="frames">All Genres</button>
+                            <button class="category-btn" data-category="wedding" data-section="frames">💒 Wedding</button>
+                            <button class="category-btn" data-category="birthday" data-section="frames">🎂 Birthday</button>
+                            <button class="category-btn" data-category="festival" data-section="frames">🎪 Festival</button>
+                            <button class="category-btn" data-category="romantic" data-section="frames">💕 Romantic</button>
+                            <button class="category-btn" data-category="kids" data-section="frames">🎈 Kids Party</button>
+                            <button class="category-btn" data-category="corporate" data-section="frames">💼 Corporate</button>
+                            <button class="category-btn" data-category="seasonal" data-section="frames">🌸 Seasonal</button>
+                            <button class="category-btn" data-category="minimalist" data-section="frames">⬜ Minimalist</button>
+                        </div>
+
+                        <!-- Frames Grid -->
+                        <div class="templates-grid" id="frames-gallery-grid">
+                            <!-- Sample frames - will be populated by JavaScript -->
+                            <div class="template-card" data-id="frame-1" data-category="wedding" onclick="console.log('Frame card clicked!'); toggleFrameSelection('frame-1');" style="cursor: pointer;">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/FFE5F1/FF69B4?text=Wedding+Elegance" alt="Wedding Elegance">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn" onclick="event.stopPropagation(); console.log('Button clicked!'); toggleFrameSelection('frame-1');">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Wedding Elegance</h4>
+                                    <span class="template-category">Wedding</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-2" data-category="wedding" onclick="console.log('Frame 2 clicked!'); toggleFrameSelection('frame-2');" style="cursor: pointer;">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/FFF0E5/FFD700?text=Golden+Wedding" alt="Golden Wedding">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Golden Wedding</h4>
+                                    <span class="template-category">Wedding</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-3" data-category="birthday" onclick="console.log('Frame 3 clicked!'); toggleFrameSelection('frame-3');" style="cursor: pointer;">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/E5F3FF/4169E1?text=Birthday+Bash" alt="Birthday Bash">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Birthday Bash</h4>
+                                    <span class="template-category">Birthday</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-4" data-category="birthday" onclick="console.log('Frame 4 clicked!'); toggleFrameSelection('frame-4');" style="cursor: pointer;">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/FFE5FF/FF00FF?text=Kids+Birthday" alt="Kids Birthday">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Kids Birthday Fun</h4>
+                                    <span class="template-category">Birthday</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-5" data-category="festival">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/FFF5E5/FF8C00?text=Diwali+Lights" alt="Diwali Lights">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Diwali Lights</h4>
+                                    <span class="template-category">Festival</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-6" data-category="festival">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/E5FFE5/00FF00?text=Holi+Colors" alt="Holi Colors">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Holi Colors</h4>
+                                    <span class="template-category">Festival</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-7" data-category="romantic">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/FFE5E5/FF0000?text=Love+Hearts" alt="Love Hearts">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Love Hearts</h4>
+                                    <span class="template-category">Romantic</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-8" data-category="kids">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/E5E5FF/9370DB?text=Cartoon+Fun" alt="Cartoon Fun">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Cartoon Fun</h4>
+                                    <span class="template-category">Kids Party</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-9" data-category="corporate">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/F0F0F0/333333?text=Professional" alt="Professional">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Professional</h4>
+                                    <span class="template-category">Corporate</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-10" data-category="seasonal">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/E5F5FF/00CED1?text=Summer+Beach" alt="Summer Beach">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Summer Beach</h4>
+                                    <span class="template-category">Seasonal</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-11" data-category="minimalist">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/FFFFFF/000000?text=Simple+Border" alt="Simple Border">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Simple Border</h4>
+                                    <span class="template-category">Minimalist</span>
+                                </div>
+                            </div>
+
+                            <div class="template-card" data-id="frame-12" data-category="festival">
+                                <div class="template-image">
+                                    <img src="https://via.placeholder.com/300x400/FFE5E5/DC143C?text=Christmas+Joy" alt="Christmas Joy">
+                                    <div class="template-overlay">
+                                        <button class="template-action-btn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="template-info">
+                                    <h4>Christmas Joy</h4>
+                                    <span class="template-category">Festival</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selected Frames View -->
+                    <div class="template-view" id="frames-selected-view" style="display: none;">
+                        <div class="selected-templates-header">
+                            <h4>Selected Photo Frames</h4>
+                            <p>Drag frames to reorder them. This is the order users will see in the app.</p>
+                            <div class="sorting-controls">
+                                <div class="sort-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="frames-auto-sort">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>Auto-sort by popularity</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="templates-grid sortable" id="frames-selected-grid">
+                            <!-- Selected frames will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Viewer Modal -->
+    <div class="modal" id="image-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Photo Details</h3>
+                <button class="close-btn" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="image-comparison">
+                    <div class="image-panel">
+                        <h4>Source Image</h4>
+                        <img id="source-image" src="" alt="Source">
+                    </div>
+                    <div class="image-panel">
+                        <h4>Style Applied</h4>
+                        <img id="style-image" src="" alt="Style">
+                    </div>
+                    <div class="image-panel">
+                        <h4>Final Result</h4>
+                        <img id="final-image" src="" alt="Final">
+                    </div>
+                </div>
+                
+                <div class="photo-metadata">
+                    <div class="metadata-item">
+                        <strong>Date-Time:</strong> <span id="photo-datetime"></span>
+                    </div>
+                    <div class="metadata-item">
+                        <strong>Frame:</strong> <span id="photo-frame"></span>
+                    </div>
+                    <div class="metadata-item">
+                        <strong>Style:</strong> <span id="photo-style"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="action-btn download-btn" id="download-all">
+                    <i class="fas fa-download"></i>
+                    Download All
+                </button>
+                <button class="action-btn print-btn" id="print-photo">
+                    <i class="fas fa-print"></i>
+                    Print
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3>Confirm Action</h3>
+                <button class="close-btn" id="close-confirm">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message"></p>
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn cancel-btn" id="cancel-action">Cancel</button>
+                <button class="action-btn danger-btn" id="confirm-action">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Preview Modal -->
+    <div class="modal" id="template-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="template-modal-title">Template Preview</h3>
+                <button class="close-btn" id="close-template-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="template-preview">
+                    <div class="preview-image-container">
+                        <img id="template-preview-image" src="" alt="Template Preview">
+                    </div>
+                    <div class="template-details">
+                        <div class="template-info">
+                            <h4 id="template-name">Template Name</h4>
+                            <span class="template-category" id="template-category">Category</span>
+                        </div>
+                        <div class="template-controls">
+                            <div class="status-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="template-active-toggle">
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="status-label">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn save-btn" id="template-save">
+                    <i class="fas fa-save"></i>
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantara AI Photo Booth - UI Flow Mockup</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="mockup-container">
+        <h1>Vantara AI Photo Booth - Complete UI Flow</h1>
+        
+        <!-- Screen Navigation -->
+        <div class="screen-navigation">
+            <button onclick="showScreen(1)" class="nav-btn active" id="nav-1">1. Idle/Attract</button>
+            <button onclick="showScreen(2)" class="nav-btn" id="nav-2">2. Photo Capture</button>
+            <button onclick="showScreen(3)" class="nav-btn" id="nav-3">3. Who's in Picture</button>
+            <button onclick="showScreen(4)" class="nav-btn" id="nav-4">4. AI Style Selection</button>
+            <button onclick="showScreen(5)" class="nav-btn" id="nav-5">5. Frame Selection</button>
+            <button onclick="showScreen(6)" class="nav-btn" id="nav-6">6. AI Processing</button>
+            <button onclick="showScreen(7)" class="nav-btn" id="nav-7">7. Final Output & QR</button>
+        </div>
+
+        <!-- Dual Screen Layout -->
+        <div class="dual-screen-layout">
+            <!-- TV Screen (Portrait) -->
+            <div class="tv-screen">
+                <div class="screen-label">TV (Portrait Mode)</div>
+                <div class="tv-content" id="tv-content">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Tablet Screen (Portrait) -->
+            <div class="tablet-screen">
+                <div class="screen-label">Tablet (Portrait Mode)</div>
+                <div class="tablet-content" id="tablet-content">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

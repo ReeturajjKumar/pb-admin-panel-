@@ -1,0 +1,177 @@
+            <!-- Credits Dashboard -->
+            <div class="dashboard-content" id="credits-dashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>💰 Credits</h2>
+                    <p>Manage your credits and track usage</p>
+                </div>
+
+                <!-- Main Balance Display -->
+                <div class="credit-balance-hero">
+                    <div class="balance-container">
+                        <div class="balance-main">
+                            <h3>Your Balance</h3>
+                            <div class="balance-display">
+                                <span class="balance-number" id="current-balance">2,450</span>
+                                <span class="balance-label">credits</span>
+                            </div>
+                            <button class="btn-buy-credits" onclick="showBuyCredits()">
+                                <i class="fas fa-plus"></i> Buy More Credits
+                            </button>
+                        </div>
+                        <div class="balance-stats">
+                            <div class="stat">
+                                <span class="stat-value">1,250</span>
+                                <span class="stat-label">Used this month</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">95</span>
+                                <span class="stat-label">Used today</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">₹125</span>
+                                <span class="stat-label">Per credit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="credit-tabs">
+                    <button class="tab-btn active" onclick="showCreditTab('usage')">
+                        <i class="fas fa-history"></i> Usage History
+                    </button>
+                    <button class="tab-btn" onclick="showCreditTab('packages')">
+                        <i class="fas fa-shopping-bag"></i> Buy Credits
+                    </button>
+                    <button class="tab-btn" onclick="showCreditTab('billing')">
+                        <i class="fas fa-receipt"></i> Billing History
+                    </button>
+                </div>
+
+                <!-- Usage History Tab -->
+                <div class="credit-tab-content" id="usage-tab">
+                    <div class="usage-controls">
+                        <select id="usage-filter" onchange="filterUsage()">
+                            <option value="today">Today</option>
+                            <option value="week" selected>Last 7 days</option>
+                            <option value="month">Last 30 days</option>
+                            <option value="all">All time</option>
+                        </select>
+                        <button class="btn-export" onclick="exportUsage()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+
+                    <div class="usage-timeline">
+                        <!-- Sample usage entries -->
+                        <div class="usage-day">
+                            <div class="day-header">Today</div>
+                            <div class="usage-items">
+                                <div class="usage-item">
+                                    <div class="usage-time">2:30 PM</div>
+                                    <div class="usage-details">
+                                        <span class="usage-type">Face Swap - Celebrity</span>
+                                        <span class="usage-style">Tom Cruise</span>
+                                    </div>
+                                    <div class="usage-cost">-1 credit</div>
+                                </div>
+                                <div class="usage-item">
+                                    <div class="usage-time">2:15 PM</div>
+                                    <div class="usage-details">
+                                        <span class="usage-type">AI Effect</span>
+                                        <span class="usage-style">Underwater Scene</span>
+                                    </div>
+                                    <div class="usage-cost">-1 credit</div>
+                                </div>
+                                <div class="usage-item purchase">
+                                    <div class="usage-time">10:00 AM</div>
+                                    <div class="usage-details">
+                                        <span class="usage-type">Credit Purchase</span>
+                                        <span class="usage-style">Professional Package</span>
+                                    </div>
+                                    <div class="usage-cost">+1,500 credits</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usage-day">
+                            <div class="day-header">Yesterday</div>
+                            <div class="usage-items">
+                                <div class="usage-item">
+                                    <div class="usage-time">4:45 PM</div>
+                                    <div class="usage-details">
+                                        <span class="usage-type">Face Swap - Historical</span>
+                                        <span class="usage-style">Einstein</span>
+                                    </div>
+                                    <div class="usage-cost">-1 credit</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buy Credits Tab -->
+                <div class="credit-tab-content" id="packages-tab" style="display: none;">
+                    <div class="packages-grid">
+                        <div class="package-card">
+                            <div class="package-header">
+                                <h4>Starter</h4>
+                                <div class="package-price">₹112,500</div>
+                            </div>
+                            <div class="package-credits">750 Credits</div>
+                            <div class="package-rate">₹150 per credit</div>
+                            <button class="package-btn">Buy Now</button>
+                        </div>
+                        
+                        <div class="package-card popular">
+                            <div class="popular-badge">Most Popular</div>
+                            <div class="package-header">
+                                <h4>Professional</h4>
+                                <div class="package-price">₹187,500</div>
+                            </div>
+                            <div class="package-credits">1,500 Credits</div>
+                            <div class="package-rate">₹125 per credit</div>
+                            <div class="package-savings">Save 17%</div>
+                            <button class="package-btn">Buy Now</button>
+                        </div>
+                        
+                        <div class="package-card">
+                            <div class="package-header">
+                                <h4>Enterprise</h4>
+                                <div class="package-price">₹297,000</div>
+                            </div>
+                            <div class="package-credits">3,000 Credits</div>
+                            <div class="package-rate">₹99 per credit</div>
+                            <div class="package-savings">Save 34%</div>
+                            <button class="package-btn">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Billing History Tab -->
+                <div class="credit-tab-content" id="billing-tab" style="display: none;">
+                    <div class="billing-list">
+                        <div class="billing-item">
+                            <div class="billing-date">Dec 15, 2024</div>
+                            <div class="billing-details">
+                                <span class="billing-desc">Professional Package - 1,500 Credits</span>
+                                <span class="billing-invoice">#INV-2024-1215</span>
+                            </div>
+                            <div class="billing-amount">₹187,500</div>
+                            <button class="btn-download-invoice">
+                                <i class="fas fa-file-pdf"></i>
+                            </button>
+                        </div>
+                        <div class="billing-item">
+                            <div class="billing-date">Nov 28, 2024</div>
+                            <div class="billing-details">
+                                <span class="billing-desc">Starter Package - 750 Credits</span>
+                                <span class="billing-invoice">#INV-2024-1128</span>
+                            </div>
+                            <div class="billing-amount">₹112,500</div>
+                            <button class="btn-download-invoice">
+                                <i class="fas fa-file-pdf"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
